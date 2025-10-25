@@ -12,46 +12,49 @@ export const EquipmentProvider = ({ children }) => {
   const [equipments, setEquipments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch all equipment from backend
-  const loadEquipments = async () => {
-    try {
-      const { data } = await fetchEquipments();
-      setEquipments(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("❌ Failed to load equipments:", error);
-    }
-  };
-
+  // Fetch all equipment on load
   useEffect(() => {
-    loadEquipments();
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        const { data } = await fetchEquipments();
+        setEquipments(data);
+      } catch (error) {
+        console.error("Error fetching equipment:", error);
+      }
+      setLoading(false);
+    };
+
+    loadData();
   }, []);
 
-  // Add new equipment
+  // Add equipment
   const handleAdd = async (equipmentData) => {
     try {
       const { data } = await addEquipment(equipmentData);
-      setEquipments([...equipments, data]);
+      setEquipments((prev) => [...prev, data]);
     } catch (error) {
       console.error("❌ Error adding equipment:", error);
     }
   };
 
-  // Update existing equipment
+  // Update
   const handleUpdate = async (id, updatedData) => {
     try {
       const { data } = await updateEquipment(id, updatedData);
-      setEquipments(equipments.map((eq) => (eq._id === id ? data : eq)));
+      setEquipments((prev) =>
+        prev.map((eq) => (eq._id === id ? data : eq))
+      );
     } catch (error) {
       console.error("❌ Error updating equipment:", error);
     }
   };
 
-  // Delete equipment
+  // Delete
   const handleDelete = async (id) => {
     try {
       await deleteEquipment(id);
-      setEquipments(equipments.filter((eq) => eq._id !== id));
+      setEquipments((prev) => prev.filter((eq) => eq._id !== id));
     } catch (error) {
       console.error("❌ Error deleting equipment:", error);
     }

@@ -28,7 +28,8 @@ app.get("/", (req, res) => {
   res.send("🩺 Medical Equipment Management API is running...");
 });
 
-app.use("/api/equipments", equipmentRoutes);
+app.use("/api/equipments", require("./routes/equipmentRoutes"));
+
 
 // ✅ Error handler (should come after routes)
 app.use(errorHandler);

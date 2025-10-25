@@ -1,20 +1,20 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // Backend base URL
+  baseURL: "http://localhost:5000/api/equipments",
 });
 
 // Get all equipments
-export const fetchEquipments = () => API.get("/equipments");
+export const fetchEquipments = () => API.get("/");
 
-// Add a new equipment
-export const addEquipment = (equipmentData) => API.post("/equipments", equipmentData);
+// Add new equipment
+export const addEquipment = (data) => API.post("/", data);
 
-// Update an equipment
-export const updateEquipment = (id, updatedData) => API.put(`/equipments/${id}`, updatedData);
+// Update equipment
+export const updateEquipment = (id, data) => API.put(`/${id}`, data);
 
-// Delete an equipment
-export const deleteEquipment = (id) => API.delete(`/equipments/${id}`);
+// Delete equipment
+export const deleteEquipment = (id) => API.delete(`/${id}`);
 
-// Get single equipment
-export const getEquipmentById = (id) => API.get(`/equipments/${id}`);
+// Get one equipment by ID
+export const getEquipmentById = (id) => API.get(`/${id}`);

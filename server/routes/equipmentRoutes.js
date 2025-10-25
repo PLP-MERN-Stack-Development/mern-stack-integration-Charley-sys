@@ -5,14 +5,36 @@ const Equipment = require("../models/Equipment");
 // @desc    Get all equipments
 // @route   GET /api/equipments
 // @access  Public
+// @desc    Get all equipments + search & filter
+// @route   GET /api/equipments?search=&status=
+// @access  Public
 router.get("/", async (req, res, next) => {
   try {
-    const equipments = await Equipment.find();
+    const { search, status } = req.query;
+
+    let query = {};
+
+    // Search by name, model or serialNumber
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { model: { $regex: search, $options: "i" } },
+        { serialNumber: { $regex: search, $options: "i" } }
+      ];
+    }
+
+    // Filter by status (ignore "All")
+    if (status && status !== "All") {
+      query.status = status;
+    }
+
+    const equipments = await Equipment.find(query);
     res.status(200).json(equipments);
   } catch (error) {
     next(error);
   }
 });
+
 
 // @desc    Add new equipment
 // @route   POST /api/equipments
