@@ -1,79 +1,73 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { EquipmentContext } from "../context/EquipmentContext";
+import EquipmentCard from "../components/EquipmentCard";
 
 const EquipmentList = () => {
-  const { equipments, loading, handleDelete, fetchEquipments } = useContext(EquipmentContext);
+  const { equipments, fetchEquipments, loading, error } = useContext(EquipmentContext);
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
-
-  // Fetch when filters change
   useEffect(() => {
-    fetchEquipments(searchTerm, statusFilter);
-  }, [searchTerm, statusFilter]);
+    fetchEquipments();
+  }, [fetchEquipments]);
 
   if (loading) {
-    return <p className="text-center mt-10 text-gray-600">Loading equipments...</p>;
+    return (
+      <div className="p-8">
+        <h1 className="text-3xl font-bold mb-6">Medical Equipment Dashboard</h1>
+        <div className="flex justify-center items-center h-40">
+          <div className="text-lg text-gray-600">Loading medical equipment data...</div>
+        </div>
+      </div>
+    );
   }
 
-  if (!equipments.length) {
-    return <p className="text-center mt-10 text-gray-600">No equipment found.</p>;
+  if (error) {
+    return (
+      <div className="p-8">
+        <h1 className="text-3xl font-bold mb-6">Medical Equipment Dashboard</h1>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <h3 className="text-red-800 font-semibold text-lg mb-2">Connection Issue</h3>
+          <p className="text-red-700 mb-4">{error}</p>
+          <button 
+            onClick={fetchEquipments}
+            className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+          >
+            Retry Connection
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6 text-center">Equipment Dashboard</h1>
-
-      {/* Search + Filter Bar */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6 justify-center">
-        <input
-          type="text"
-          placeholder="Search by name, model or serial..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border p-2 rounded-md w-full md:w-1/2"
-        />
-
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="border p-2 rounded-md w-full md:w-1/4"
-        >
-          <option value="All">All Status</option>
-          <option value="Operational">Operational</option>
-          <option value="Maintenance">Maintenance</option>
-          <option value="Out of Service">Out of Service</option>
-        </select>
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">Medical Equipment Dashboard</h1>
+          <p className="text-gray-600 mt-2">Manage and monitor all medical equipment</p>
+        </div>
+        <div className="bg-blue-50 text-blue-800 px-4 py-3 rounded-lg border border-blue-200">
+          <div className="text-sm font-medium">Total Equipment</div>
+          <div className="text-2xl font-bold">{equipments.length}</div>
+        </div>
       </div>
 
-      {/* Equipment Table */}
-      <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
-        <thead>
-          <tr className="bg-gray-100 text-gray-700 uppercase text-sm">
-            <th className="py-3 px-4 text-left border">Name</th>
-            <th className="py-3 px-4 text-left border">Model</th>
-            <th className="py-3 px-4 text-left border">Status</th>
-            <th className="py-3 px-4 text-left border">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {equipments.map((eq) => (
-            <tr key={eq._id} className="hover:bg-gray-50">
-              <td className="py-2 px-4 border">{eq.name}</td>
-              <td className="py-2 px-4 border">{eq.model || "N/A"}</td>
-              <td className="py-2 px-4 border">{eq.status}</td>
-              <td className="py-2 px-4 border text-center">
-                <button
-                  onClick={() => handleDelete(eq._id)}
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
+      {equipments.length === 0 ? (
+        <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+          <div className="text-gray-500 text-lg mb-4">No medical equipment found</div>
+          <button 
+            onClick={fetchEquipments}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+          >
+            Refresh Equipment List
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {equipments.map((item) => (
+            <EquipmentCard key={item._id} item={item} />
           ))}
-        </tbody>
-      </table>
+        </div>
+      )}
     </div>
   );
 };

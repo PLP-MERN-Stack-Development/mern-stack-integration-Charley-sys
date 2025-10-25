@@ -1,39 +1,45 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const morgan = require("morgan");
-const connectDB = require("./config/db");
-const equipmentRoutes = require("./routes/equipmentRoutes");
-const errorHandler = require("./middleware/errorHandler");
-
-// ✅ Load environment variables
-dotenv.config();
-
-// ✅ Connect to MongoDB
-connectDB();
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 
-// ✅ Middleware
-app.use(express.json());
+// CORS configuration
 app.use(cors({
-  origin: ["http://localhost:5173"], // allow frontend during dev
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: 'http://localhost:3000',
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(morgan("dev"));
 
-// ✅ Routes
-app.get("/", (req, res) => {
-  res.send("🩺 Medical Equipment Management API is running...");
+app.use(express.json());
+
+// Equipment Routes
+app.use('/api/equipments', require('./routes/equipmentRoutes'));
+
+// Server status endpoint
+app.get('/api/status', (req, res) => {
+  res.json({ 
+    server: 'Running', 
+    database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
+    timestamp: new Date().toISOString()
+  });
 });
 
-app.use("/api/equipments", require("./routes/equipmentRoutes"));
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/medical-equipment', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('✅ MongoDB connected successfully'))
+.catch(err => console.error('❌ MongoDB connection error:', err));
 
-
-// ✅ Error handler (should come after routes)
-app.use(errorHandler);
-
-// ✅ Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`🚀 Medical Equipment Server running on port ${PORT}`);
+  console.log(`🏥 All Equipment: http://localhost:${PORT}/api/equipments`);
+  console.log(`📈 Equipment Stats: http://localhost:${PORT}/api/equipments/stats`);
+  console.log(`🧪 Equipment Test: http://localhost:${PORT}/api/equipments/test`);
+  console.log(`📊 Server Status: http://localhost:${PORT}/api/status`);
+});
