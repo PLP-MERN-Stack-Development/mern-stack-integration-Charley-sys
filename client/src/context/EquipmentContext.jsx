@@ -8,15 +8,29 @@ export const EquipmentProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Determine API base URL based on environment
+  const getApiBaseUrl = () => {
+    // In development, use proxy (localhost:5000)
+    // In production, you'll set this to your deployed backend URL
+    if (import.meta.env.DEV) {
+      return '/api'; // Vite proxy will handle this
+    } else {
+      // For now, fallback to localhost for development
+      return 'http://localhost:5000/api';
+    }
+  };
+
   const fetchEquipments = useCallback(async () => {
     console.log('🚀 Starting to fetch medical equipment data...');
     setLoading(true);
     setError(null);
     
+    const API_BASE_URL = getApiBaseUrl();
+    
     try {
-      // USE RELATIVE URL - Vite proxy will handle this
-      console.log('📡 Fetching equipment data from /api/equipments...');
-      const response = await axios.get('/api/equipments', {
+      console.log(`📡 Fetching from: ${API_BASE_URL}/equipments`);
+      
+      const response = await axios.get(`${API_BASE_URL}/equipments`, {
         timeout: 5000,
       });
       
@@ -30,18 +44,18 @@ export const EquipmentProvider = ({ children }) => {
       let errorMessage = 'Failed to connect to medical equipment server';
       
       if (err.code === 'ECONNREFUSED') {
-        errorMessage = 'Cannot connect to server. Please make sure the backend is running on port 5000 and Vite proxy is configured.';
+        errorMessage = 'Backend server is not running. Please start the backend server on port 5000.';
       } else if (err.response) {
         errorMessage = `Server error: ${err.response.status} - ${err.response.data?.message || err.response.statusText}`;
       } else if (err.request) {
-        errorMessage = 'No response from server. Check if backend is running and Vite proxy is configured in vite.config.js.';
+        errorMessage = 'No response from backend server. Please make sure the backend is running on port 5000.';
       } else {
         errorMessage = `Connection error: ${err.message}`;
       }
       
       setError(errorMessage);
       
-      // Use fallback sample data
+      // Use fallback sample data so you can at least see the UI
       console.log('🔄 Using sample medical equipment data');
       const sampleMedicalEquipment = [
         {
