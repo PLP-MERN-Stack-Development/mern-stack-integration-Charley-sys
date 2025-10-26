@@ -8,26 +8,23 @@ export const EquipmentProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://mern-stack-integration-charley-sys-2.onrender.com';
+  const API_BASE_URL = 'https://mern-stack-integration-charley-sys-2.onrender.com';
 
   const fetchEquipments = useCallback(async () => {
-    console.log('🚀 Fetching from:', API_BASE_URL);
+    console.log('🚀 Fetching from deployed backend...');
     setLoading(true);
     setError(null);
     
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/equipments`, {
-        timeout: 10000,
-      });
-      
-      console.log('✅ Data received:', response.data);
+      const response = await axios.get(`${API_BASE_URL}/api/equipments`);
+      console.log('✅ Data received successfully');
       setEquipments(response.data);
       
     } catch (err) {
       console.error('❌ API Error:', err);
-      setError('Failed to load equipment data');
+      setError('Temporary connection issue - showing sample data');
       
-      // Fallback sample data
+      // Use the same sample data as backend fallback
       const sampleData = [
         {
           _id: "1",
@@ -46,6 +43,15 @@ export const EquipmentProvider = ({ children }) => {
           status: "Maintenance",
           location: "Lab Room 1",
           dateInstalled: "2024-12-10T00:00:00.000Z"
+        },
+        {
+          _id: "3",
+          name: "X-Ray Machine",
+          model: "XR-5000", 
+          serialNumber: "SN-78901",
+          status: "Operational",
+          location: "Radiology Room 1",
+          dateInstalled: "2024-01-15T00:00:00.000Z"
         }
       ];
       setEquipments(sampleData);
