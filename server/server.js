@@ -4,8 +4,23 @@ const cors = require('cors');
 
 const app = express();
 
-// Enable CORS for all origins (for now)
-app.use(cors());
+// Enhanced CORS configuration for Vercel deployment
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://mern-stack-integration-charley-sys-mu.vercel.app',
+    'https://mern-stack-integration-charley-sys-frontend-5chfy1r5x.vercel.app',
+    'https://mern-stack-integration-charley-sys-2.onrender.com',
+    'https://mern-stack-integra-git-afd4a9-charles-otienos-projects-7eea7a88.vercel.app'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
+
+// Handle preflight requests
+app.options('*', cors());
 
 app.use(express.json());
 
@@ -43,12 +58,15 @@ let equipmentData = [
 // Equipment routes with MongoDB fallback
 app.get('/api/equipments', async (req, res) => {
   try {
+    console.log('📬 Equipment API called from:', req.get('Origin'));
     // Try MongoDB first
     const Equipment = require('./models/Equipment');
     const equipments = await Equipment.find();
+    console.log('✅ Sending MongoDB data');
     res.json(equipments);
   } catch (error) {
     console.log('📦 Using fallback equipment data');
+    console.log('🔧 Fallback reason:', error.message);
     res.json(equipmentData);
   }
 });
@@ -59,7 +77,8 @@ app.get('/api/status', (req, res) => {
     status: 'OK',
     message: 'Medical Equipment API is running',
     database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    cors: 'Enabled for Vercel deployment'
   });
 });
 
@@ -69,6 +88,11 @@ app.get('/', (req, res) => {
     message: 'Medical Equipment Management System API',
     version: '1.0.0',
     status: 'Running',
+    cors: 'Configured for frontend deployment',
+    frontendUrls: [
+      'https://mern-stack-integration-charley-sys-mu.vercel.app',
+      'https://mern-stack-integration-charley-sys-frontend-5chfy1r5x.vercel.app'
+    ],
     endpoints: {
       root: '/',
       status: '/api/status',
@@ -94,8 +118,7 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       serverSelectionTimeoutMS: 5000,
-      bufferCommands: false,
-      bufferMaxEntries: 0
+      bufferCommands: false
     });
     
     // Timeout after 10 seconds
@@ -119,6 +142,10 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Medical Equipment Server running on port ${PORT}`);
   console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔧 CORS enabled for Vercel frontend`);
+  console.log(`📡 Frontend URLs configured:`);
+  console.log(`   - https://mern-stack-integration-charley-sys-mu.vercel.app`);
+  console.log(`   - https://mern-stack-integration-charley-sys-frontend-5chfy1r5x.vercel.app`);
 });
 
 // Graceful shutdown

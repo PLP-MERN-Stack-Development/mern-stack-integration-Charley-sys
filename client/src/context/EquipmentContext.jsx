@@ -8,11 +8,10 @@ export const EquipmentProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Use environment variable for API URL with fallback
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://mern-stack-integration-charley-sys-2.onrender.com';
 
   const fetchEquipments = useCallback(async () => {
-    console.log('🚀 Fetching medical equipment data from:', API_BASE_URL);
+    console.log('🚀 Fetching from:', API_BASE_URL);
     setLoading(true);
     setError(null);
     
@@ -21,23 +20,12 @@ export const EquipmentProvider = ({ children }) => {
         timeout: 10000,
       });
       
-      console.log('✅ Medical equipment data received successfully');
+      console.log('✅ Data received:', response.data);
       setEquipments(response.data);
       
     } catch (err) {
-      console.error('❌ Equipment API Error:', err);
-      
-      let errorMessage = 'Failed to fetch equipment data';
-      
-      if (err.code === 'ECONNREFUSED' || err.code === 'NETWORK_ERROR') {
-        errorMessage = 'Cannot connect to the server. Please try again later.';
-      } else if (err.response) {
-        errorMessage = `Server error: ${err.response.status}`;
-      } else if (err.request) {
-        errorMessage = 'No response from server. The service might be temporarily unavailable.';
-      }
-      
-      setError(errorMessage);
+      console.error('❌ API Error:', err);
+      setError('Failed to load equipment data');
       
       // Fallback sample data
       const sampleData = [
@@ -54,7 +42,7 @@ export const EquipmentProvider = ({ children }) => {
           _id: "2",
           name: "Centrifuge", 
           model: "CF-900",
-          serialNumber: "SN-54872",
+          serialNumber: "SN-54872", 
           status: "Maintenance",
           location: "Lab Room 1",
           dateInstalled: "2024-12-10T00:00:00.000Z"
