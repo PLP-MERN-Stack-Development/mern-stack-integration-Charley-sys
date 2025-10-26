@@ -3,21 +3,25 @@
 
 A full-stack MERN (MongoDB, Express.js, React, Node.js) application for managing medical equipment in healthcare facilities. This system provides a comprehensive dashboard to track, monitor, and manage medical equipment with real-time status updates.
 
-🚀 Live Demo
+# 🚀 Live Demo
+
 Frontend Application: https://mern-stack-integration-charley-sys-mu.vercel.app
 
 Backend API: https://mern-stack-integration-charley-sys-2.onrender.com
 
-📁 Repository
+# 📁 Repository
+
 GitHub Repository: https://github.com/PLP-MERN-Stack-Development/mern-stack-integration-Charley-sys
 
 📸 Application Screenshot
-https://./screenshots/dashboard.png
 
-Dashboard showing medical equipment with status indicators and detailed information
+https://github.com/PLP-MERN-Stack-Development/mern-stack-integration-Charley-sys/blob/75834dad7c3730add06ecc49bd74e421df6f320a/Screenshot%20(477).png
 
-🛠️ Features
+
+# 🛠️ Features
+
 Core Functionality
+
 ✅ Equipment Dashboard - View all medical equipment in a responsive grid layout with status badges
 
 ✅ Equipment Status Tracking - Real-time status monitoring (Operational, Maintenance, Out of Service) with color-coded indicators
@@ -29,6 +33,7 @@ Core Functionality
 ✅ Responsive Design - Mobile-friendly interface built with Tailwind CSS
 
 Technical Features
+
 ✅ RESTful API - Clean API design with proper HTTP status codes
 
 ✅ CORS Configuration - Secure cross-origin resource sharing
@@ -39,8 +44,10 @@ Technical Features
 
 ✅ Modern React - Built with React 19, Hooks, and Context API
 
-💻 Technology Stack
+# 💻 Technology Stack
+
 Frontend
+
 React 19 - Modern React with latest features
 
 Vite - Fast build tool and development server
@@ -54,6 +61,7 @@ React Router DOM - Client-side routing
 Lucide React - Beautiful icons
 
 Backend
+
 Node.js - JavaScript runtime environment
 
 Express.js - Web application framework
@@ -66,15 +74,18 @@ CORS - Cross-Origin Resource Sharing middleware
 
 dotenv - Environment variable management
 
-Deployment
+# Deployment
+
 Vercel - Frontend deployment platform
 
 Render - Backend deployment platform
 
 MongoDB Atlas - Cloud database service
 
-📊 API Endpoints
+# 📊 API Endpoints
+
 Equipment Management
+
 GET /api/equipments - Retrieve all equipment items
 
 GET /api/equipments/:id - Get specific equipment details
@@ -86,11 +97,13 @@ PUT /api/equipments/:id - Update equipment information
 DELETE /api/equipments/:id - Remove equipment
 
 System Information
+
 GET / - API information and documentation
 
 GET /api/status - Server health check and status
 
-🎯 Demo Equipment
+# 🎯 Demo Equipment
+
 The application comes pre-loaded with sample medical equipment:
 
 Hemoglobin Analyzer - Operational (Lab Room 2)
@@ -101,8 +114,8 @@ X-Ray Machine - Operational (Radiology Room 1)
 
 Ultrasound Scanner - Operational (Imaging Room 2)
 
-🏗️ Project Structure
-text
+# 🏗️ Project Structure
+
 mern-stack-integration-Charley-sys/
 ├── frontend/                 # React Vite application
 │   ├── src/
@@ -120,8 +133,10 @@ mern-stack-integration-Charley-sys/
 │   └── package.json
 ├── screenshots/              # Application screenshots
 └── README.md
-🚀 Installation & Local Development
+# 🚀 Installation & Local Development
+
 Prerequisites
+
 Node.js (v18 or higher)
 
 MongoDB (local or Atlas)
@@ -129,7 +144,9 @@ MongoDB (local or Atlas)
 Git
 
 Backend Setup
+
 bash
+
 # Clone the repository
 git clone https://github.com/PLP-MERN-Stack-Development/mern-stack-integration-Charley-sys.git
 
@@ -155,13 +172,13 @@ npm install
 
 # Start development server
 npm run dev
-The application will be available at:
+# The application will be available at:
 
 Frontend: http://localhost:5173
 
 Backend: http://localhost:5000
 
-🌐 Deployment
+# 🌐 Deployment
 Backend Deployment (Render)
 Connect GitHub repository to Render
 
@@ -204,12 +221,15 @@ Push to the branch (git push origin feature/amazing-feature)
 Open a Pull Request
 
 📝 License
+
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 👥 Authors
+
 Charles Otieno - Initial work - Charley-sys
 
 🙏 Acknowledgments
+
 Power Learn Project (PLP) for the MERN Stack Development program
 
 Vercel and Render for providing excellent deployment platforms
@@ -219,15 +239,20 @@ MongoDB Atlas for cloud database services
 The React and Node.js communities for excellent documentation and support
 
 📞 Support
+
 For support, please open an issue in the GitHub repository or contact the development team.
 
 Built with ❤️ for the Power Learn Project MERN Stack Development Assignment
 
+# Dashboard Features Showcase
 
-📱 Dashboard Features Showcase
 Feature	Description
+
 https://github.com/PLP-MERN-Stack-Development/mern-stack-integration-Charley-sys/blob/75834dad7c3730add06ecc49bd74e421df6f320a/Screenshot%20(477).png
-#Color-coded status badges for quick equipment status identification
-#Detailed equipment cards showing all relevant information in clean layout
-#Fully responsive design that works on all device sizes
+
+1.Color-coded status badges for quick equipment status identification
+
+2.Detailed equipment cards showing all relevant information in clean layout
+
+3.Fully responsive design that works on all device sizes
 
