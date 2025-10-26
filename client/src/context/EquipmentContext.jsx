@@ -8,56 +8,39 @@ export const EquipmentProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Determine API base URL based on environment
-  const getApiBaseUrl = () => {
-    // In development, use proxy (localhost:5000)
-    // In production, you'll set this to your deployed backend URL
-    if (import.meta.env.DEV) {
-      return '/api'; // Vite proxy will handle this
-    } else {
-      // For now, fallback to localhost for development
-      return 'http://localhost:5000/api';
-    }
-  };
+  // Use environment variable for API URL with fallback
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
   const fetchEquipments = useCallback(async () => {
-    console.log('🚀 Starting to fetch medical equipment data...');
+    console.log('🚀 Fetching medical equipment data from:', API_BASE_URL);
     setLoading(true);
     setError(null);
     
-    const API_BASE_URL = getApiBaseUrl();
-    
     try {
-      console.log(`📡 Fetching from: ${API_BASE_URL}/equipments`);
-      
-      const response = await axios.get(`${API_BASE_URL}/equipments`, {
-        timeout: 5000,
+      const response = await axios.get(`${API_BASE_URL}/api/equipments`, {
+        timeout: 10000,
       });
       
       console.log('✅ Medical equipment data received successfully');
-      console.log(`📊 Received ${response.data.length} equipment items`);
       setEquipments(response.data);
       
     } catch (err) {
       console.error('❌ Equipment API Error:', err);
       
-      let errorMessage = 'Failed to connect to medical equipment server';
+      let errorMessage = 'Failed to fetch equipment data';
       
-      if (err.code === 'ECONNREFUSED') {
-        errorMessage = 'Backend server is not running. Please start the backend server on port 5000.';
+      if (err.code === 'ECONNREFUSED' || err.code === 'NETWORK_ERROR') {
+        errorMessage = 'Cannot connect to the server. Please try again later.';
       } else if (err.response) {
-        errorMessage = `Server error: ${err.response.status} - ${err.response.data?.message || err.response.statusText}`;
+        errorMessage = `Server error: ${err.response.status}`;
       } else if (err.request) {
-        errorMessage = 'No response from backend server. Please make sure the backend is running on port 5000.';
-      } else {
-        errorMessage = `Connection error: ${err.message}`;
+        errorMessage = 'No response from server. The service might be temporarily unavailable.';
       }
       
       setError(errorMessage);
       
-      // Use fallback sample data so you can at least see the UI
-      console.log('🔄 Using sample medical equipment data');
-      const sampleMedicalEquipment = [
+      // Fallback sample data
+      const sampleData = [
         {
           _id: "1",
           name: "Hemoglobin Analyzer",
@@ -75,33 +58,13 @@ export const EquipmentProvider = ({ children }) => {
           status: "Maintenance",
           location: "Lab Room 1",
           dateInstalled: "2024-12-10T00:00:00.000Z"
-        },
-        {
-          _id: "3",
-          name: "X-Ray Machine",
-          model: "XR-5000",
-          serialNumber: "SN-78901",
-          status: "Operational",
-          location: "Radiology Room 1", 
-          dateInstalled: "2024-01-15T00:00:00.000Z"
-        },
-        {
-          _id: "4",
-          name: "Ultrasound Scanner",
-          model: "US-3000",
-          serialNumber: "SN-45623",
-          status: "Operational",
-          location: "Imaging Room 2",
-          dateInstalled: "2024-03-20T00:00:00.000Z"
         }
       ];
-      
-      setEquipments(sampleMedicalEquipment);
-      
+      setEquipments(sampleData);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [API_BASE_URL]);
 
   const value = {
     equipments,
