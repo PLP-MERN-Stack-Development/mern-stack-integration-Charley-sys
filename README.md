@@ -117,22 +117,37 @@ Ultrasound Scanner - Operational (Imaging Room 2)
 # 🏗️ Project Structure
 
 mern-stack-integration-Charley-sys/
+
 ├── frontend/                 # React Vite application
 │   ├── src/
-│   │   ├── components/       # Reusable UI components
+
+│   │   ├── components/  
+                              # Reusable UI components
 │   │   ├── context/          # React Context for state management
+
 │   │   ├── pages/            # Application pages
+
 │   │   └── App.jsx           # Main application component
+
 │   ├── vite.config.js        # Vite configuration
+
 │   └── package.json
+
 ├── server/                   # Express.js backend
+
 │   ├── models/               # MongoDB models
+
 │   ├── routes/               # API routes
+
 │   ├── scripts/              # Database utilities
+
 │   ├── server.js             # Main server file
+
 │   └── package.json
 ├── screenshots/              # Application screenshots
+
 └── README.md
+
 # 🚀 Installation & Local Development
 
 Prerequisites
