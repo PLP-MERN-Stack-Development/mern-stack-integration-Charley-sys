@@ -121,8 +121,8 @@ mern-stack-integration-Charley-sys/
 ├── frontend/                 # React Vite application
 │   ├── src/
 
-│   │   ├── components/  
-                              # Reusable UI components
+│   │   ├── components/       # Reusable UI components
+
 │   │   ├── context/          # React Context for state management
 
 │   │   ├── pages/            # Application pages
