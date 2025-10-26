@@ -1,4 +1,6 @@
-Medical Equipment Management System
+# Medical Equipment Management System
+
+
 A full-stack MERN (MongoDB, Express.js, React, Node.js) application for managing medical equipment in healthcare facilities. This system provides a comprehensive dashboard to track, monitor, and manage medical equipment with real-time status updates.
 
 🚀 Live Demo
@@ -221,10 +223,11 @@ For support, please open an issue in the GitHub repository or contact the develo
 
 Built with ❤️ for the Power Learn Project MERN Stack Development Assignment
 
-<div align="center">
+
 📱 Dashboard Features Showcase
 Feature	Description
-https://./screenshots/status-badges.png	Color-coded status badges for quick equipment status identification
-https://./screenshots/equipment-cards.png	Detailed equipment cards showing all relevant information in clean layout
-https://./screenshots/responsive.png	Fully responsive design that works on all device sizes
-</div>
+https://github.com/PLP-MERN-Stack-Development/mern-stack-integration-Charley-sys/blob/75834dad7c3730add06ecc49bd74e421df6f320a/Screenshot%20(477).png
+#Color-coded status badges for quick equipment status identification
+#Detailed equipment cards showing all relevant information in clean layout
+#Fully responsive design that works on all device sizes
+
