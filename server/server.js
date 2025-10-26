@@ -7,7 +7,11 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://mern-stack-integration-charley-sys.onrender.com'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -27,6 +31,18 @@ app.get('/api/status', (req, res) => {
   });
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Medical Equipment Management System API',
+    version: '1.0.0',
+    endpoints: {
+      equipment: '/api/equipments',
+      status: '/api/status'
+    }
+  });
+});
+
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/medical-equipment', {
   useNewUrlParser: true,
@@ -38,8 +54,4 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/medical-e
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Medical Equipment Server running on port ${PORT}`);
-  console.log(`🏥 All Equipment: http://localhost:${PORT}/api/equipments`);
-  console.log(`📈 Equipment Stats: http://localhost:${PORT}/api/equipments/stats`);
-  console.log(`🧪 Equipment Test: http://localhost:${PORT}/api/equipments/test`);
-  console.log(`📊 Server Status: http://localhost:${PORT}/api/status`);
 });
